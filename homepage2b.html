@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title> ShoppingMart</title>
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+</head>
+
+<body>
+
+
+  <nav>
+    <a href="homepage2b.html">Home</a>
+  </nav>
+
+
+  <div id="shoppcart">
+    <p>shopping cart</p>
+    <ul>
+      <li>item1<input type="text"/></li>
+      <li>item2<input type="text"/></li>
+      <li>item3<input type="text"/></li>
+      <button>CheckOut</button>
+    </ul>
+  </div>
+
+  <nav>
+   <ul  id="categoryList"></ul>
+   <li> first </li>
+ </nav>
+
+ <div>
+   <ul class="table" id="productList">
+
+   </ul>
+ </div>
+
+
+<script type="text/javascript" src="incl/myLib.js"></script>
+<script type="text/javascript">
+(function(){
+
+	function updateUI() {
+		myLib.get({action:'cat_fetchall'}, function(json){
+			// loop over the server response json
+			//   the expected format (as shown in Firebug):
+			for (var listItems = [],
+					i = 0, cat; cat = json[i]; i++) {
+				listItems.push('<li id="cat' , parseInt(cat.catid) , '"><i>' , cat.name.escapeHTML() , '</i></li>');
+			}
+			el('categoryList').innerHTML = listItems.join('');
+		});
+
+		myLib.get({action: 'prod_fetchall'}, function(json)){
+			for(var listItems = [], i = 0, pord; prod = json[i]; i++){
+				listItems.push('<li id="prod' , parseInt(prod.pid) , '">', prod.name.escapeHTML(),'</li>');
+			}
+			el('productList').innerHTML = listItems.join('');
+		});
+	}
+	updateUI();
+
+  el('categoryList').onclick = function(e) {
+
+		//alert(e.target.parentNode.id.replace(/^cat/, ''));
+		var id = e.target.parentNode.id.replace(/^cat/, '');
+			
+
+				myLib.get({action:'cat_select',catid: id}, function(json){
+				// loop over the server response json
+				//   the expected format (as shown in Firebug):
+				for (var listItems = [],
+						i = 0, prod; prod = json[i]; i++) {
+
+					listItems.push('<li id="prod' , parseInt(prod.pid) , '">' , '<img src="incl/img/', parseInt(prod.pid), '.jpg"/>', '<p class="center">',prod.name.escapeHTML() , ' - $', prod.price.escapeHTML(),'</p></li>');
+					}
+				el('productList').innerHTML = listItems.join('');
+			});
+
+
+	}
+})();
+</script>
+</body>
+</html>
