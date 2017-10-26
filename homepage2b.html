@@ -32,8 +32,7 @@
 
 <section id="allProducts">
   <div>
-    <ul class="table" id="productList">
-    </ul>
+    <ul class="table" id="productList"></ul>
   </div>
 </section>
 
@@ -71,24 +70,6 @@
 	}
 	updateUI();
 
-	/*el('categoryList').onclick = function(e) {
-		var id = e.target.parentNode.id.replace(/^cat/, '');
-
-				myLib.get({action:'prod_fetchall',catid: id}, function(json){
-				// loop over the server response json
-				//   the expected format (as shown in Firebug):
-        alert("OK3");
-				for (var listItems = [],
-						i = 0, prod; prod = json[i]; i++) {
-              alert("OK4");
-              listItems.push('<li id="prod' , parseInt(prod.pid) , '">' , '<img src="incl/img/', parseInt(prod.pid), '.jpg" class="product_list"/>', prod.name.escapeHTML() ,
-              'Price: $', prod.price.escapeHTML(),'<button>Add to Cart</button></li>');
-					}
-				el('productList').innerHTML = listItems.join('');
-			});
-
-
-	}*/
 
   el('categoryList').onclick = function(e) {
 
@@ -117,29 +98,27 @@
 
 		//alert(e.target.parentNode.id.replace(/^cat/, ''));
 
-    Alert("OK1");
+    //alert("OK1");
 
 		var id = e.target.parentNode.id.replace(/^prod/, '');
 
-    Alert(id);
+    //alert(id);
 
 		myLib.get({action:'prod_select',pid: id}, function(json){
 				// loop over the server response json
 				//   the expected format (as shown in Firebug):
-        Alert("OK2");
-				for (var listItems1 = [], listItems2 = [],
+        //alert("OK2");
+				for (var listItems = [],
 						i = 0, prod; prod = json[i]; i++) {
-        Alert("OK3");
-					listItems.push('<li><img src="incl/img/', parseInt(prod.pid), '.jpg" class="product_list"/>');
-					listItems.push('<li id="prod', parseInt(prod.pid),'">','<p>Name:',prod.name.escapeHTML(),'</p><p>Price:$',
+        //alert("OK3");
+					listItems.push('<li><img src="incl/img/', parseInt(prod.pid), '.jpg" class="product_list"/>',
+          '<li id="prod', parseInt(prod.pid), '">', '<p>Name:', prod.name.escapeHTML(), '</p><p>Price:$',
           prod.price.escapeHTML(), '</p><p>Description:', prod.description.escapeHTML(),'</p><button>Add</button></li>');
 					}
 
 				el('productInfo').innerHTML = listItems.join('');
-
 			});
 			// fill in the editing form with existing values
-
 			el('productDetail').show();
 			el('categoryListPanel').show();
 			el('allProducts').hide();
