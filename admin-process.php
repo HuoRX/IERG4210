@@ -2,10 +2,12 @@
 include_once('lib/db.inc.php');
 include_once('lib/csrf.php');
 include_once('lib/auth.php');
+session_start();
 
 
 function ierg4210_cat_fetchall() {
 	// DB manipulation
+
 	global $db;
 	$db = ierg4210_DB();
 	$q = $db->prepare("SELECT * FROM categories LIMIT 100;");
@@ -19,6 +21,13 @@ function ierg4210_cat_insert() {
         if (!preg_match('/^[\w\- ]+$/', $_POST['name']))
 		throw new Exception("invalid-name");
 
+		if (!$_SESSION['authtoken']){
+			header('Location: login.php');
+			exit();
+		}
+
+		csrf_verifyNonce($_REQUEST['action'], $_POST['nonce']);
+
 	// DB manipulation
 	global $db;
 	$db = ierg4210_DB();
@@ -31,6 +40,13 @@ function ierg4210_cat_edit() {
 	if (!preg_match('/^[\w\- ]+$/', $_POST['name']))
 		throw new Exception("invalid-name");
 
+		if (!$_SESSION['authtoken']){
+			header('Location: login.php');
+			exit();
+		}
+
+	csrf_verifyNonce($_REQUEST['action'], $_POST['nonce']);
+
   $_POST['catid']=(int)$_POST['catid'];
 
 	global $db;
@@ -42,6 +58,10 @@ function ierg4210_cat_edit() {
 
 function ierg4210_cat_delete() {
 
+	if (!$_SESSION['authtoken']){
+		header('Location: login.php');
+		exit();
+	}
 	// input validation or sanitization
 	$_POST['catid'] = (int) $_POST['catid'];
 
@@ -71,6 +91,13 @@ function ierg4210_prod_insert() {
 		throw new Exception("invalid-price");
 	if (!preg_match('/^[\w\- ]+$/', $_POST['description']))
 		throw new Exception("invalid-textt");
+
+		if (!$_SESSION['authtoken']){
+			header('Location: login.php');
+			exit();
+		}
+
+	csrf_verifyNonce($_REQUEST['action'], $_POST['nonce']);
 
 	$sql="INSERT INTO products (catid, name, price, description) VALUES (?, ?, ?, ?)";
 	$q = $db->prepare($sql);
@@ -133,6 +160,13 @@ function ierg4210_prod_edit() {
 	if (!preg_match('/^[\w\- ]+$/', $_POST['description']))
 		throw new Exception("invalid-textt");
 
+		if (!$_SESSION['authtoken']){
+			header('Location: login.php');
+			exit();
+		}
+
+	csrf_verifyNonce($_REQUEST['action'], $_POST['nonce']);
+
 	$sql="UPDATE products SET catid=?, name=?, price=?, description=? WHERE pid=?";
 	$q = $db->prepare($sql);
 	//$q->execute(array($_POST['catid'],$_POST['name'],$_POST['price'],$_POST['description']));
@@ -163,6 +197,11 @@ function ierg4210_prod_edit() {
 }
 
 function ierg4210_prod_delete() {
+
+	if (!$_SESSION['authtoken']){
+		header('Location: login.php');
+		exit();
+	}
 
 	// input validation or sanitization
 	$_POST['pid'] = (int) $_POST['pid'];

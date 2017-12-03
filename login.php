@@ -25,7 +25,7 @@ if ($_SESSION['authtoken']){
 		<div>
 		<input type="password" name="pw" required="true" pattern="^[\w@#$%\^\&\*\-]+$" />
 		</div>
-		<input type="hidden" name="nonce" value="<?php echo auth(); ?>"/>
+		<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
 		<input type="submit" value="Login" />
 	</form>
 </fieldset>

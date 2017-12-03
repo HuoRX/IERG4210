@@ -18,7 +18,7 @@ function ierg4210_login(){
     if($login_success==2)
 		header('Location: admin.php', true, 302);
     else {
-    header('Location: homepage3.php', true, 302);
+    header('Location: index.php', true, 302);
     }
 		exit();
 	} else

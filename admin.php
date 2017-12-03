@@ -23,7 +23,7 @@ if (!$_SESSION['authtoken']){
 <form id="logout" method="POST" action="auth-process.php?action=logout">
 	<label for="email">User Email:</label>
 	<div>
-	<input type="text" name="email" value="<?php echo auth(); ?>" />
+	<input type="text" name="email" value="<?php echo auth(); ?>" readonly/>
 	</div>
 	<input type="submit" value="Logout"/>
 </form>
@@ -32,11 +32,12 @@ if (!$_SESSION['authtoken']){
 <section id="categoryPanel">
 	<fieldset>
 		<legend>New Category</legend>
-		<form id="cat_insert" method="POST" action="admin-process.php?action=cat_insert" onsubmit="return false;">
+		<form id="cat_insert" method="POST" action="admin-process.php?action=<?php echo ($action = 'cat_insert'); ?>" onsubmit="return false;">
 			<label for="cat_insert_name">Name</label>
 			<div><input id="cat_insert_name" type="text" name="name" required="true" pattern="^[\w\- ]+$" /></div>
 
 			<input type="submit" value="Submit" />
+			<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
 		</form>
 	</fieldset>
 
@@ -47,11 +48,12 @@ if (!$_SESSION['authtoken']){
 <section id="categoryEditPanel" class="hide">
 	<fieldset>
 		<legend>Editing Category</legend>
-		<form id="cat_edit" method="POST" action="admin-process.php?action=cat_edit" onsubmit="return false;">
+		<form id="cat_edit" method="POST" action="admin-process.php?action=<?php echo ($action = 'cat_edit'); ?>" onsubmit="return false;">
 			<label for="cat_edit_name">Name</label>
 			<div><input id="cat_edit_name" type="text" name="name" required="true" pattern="^[\w\- ]+$" /></div>
 			<input type="hidden" id="cat_edit_catid" name="catid" />
 			<input type="submit" value="Submit" /> <input type="button" id="cat_edit_cancel" value="Cancel" />
+			<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
 		</form>
 	</fieldset>
 </section>
@@ -59,7 +61,7 @@ if (!$_SESSION['authtoken']){
 <section id="productPanel">
 	<fieldset>
 		<legend>New Product</legend>
-		<form id="prod_insert" method="POST" action="admin-process.php?action=prod_insert" enctype="multipart/form-data">
+		<form id="prod_insert" method="POST" action="admin-process.php?action=<?php echo ($action = 'prod_insert'); ?>" enctype="multipart/form-data">
 			<label for="prod_insert_catid">Category *</label>
 			<div><select id="prod_insert_catid" name="catid"></select></div>
 
@@ -76,6 +78,7 @@ if (!$_SESSION['authtoken']){
 			<div><input type="file" name="file" required="true" accept="image/jpeg" /></div>
 
 			<input type="submit" value="Submit" id="prod_insert_submit"/>
+			<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
 		</form>
 	</fieldset>
 
@@ -93,7 +96,7 @@ if (!$_SESSION['authtoken']){
 		- prompt for input errors if any, then submit the form to admin-process.php (AJAX is not required)
 	-->
 	<legend>Product Editing</legend>
-	<form id="prod_edit" method="POST" action="admin-process.php?action=prod_edit" enctype="multipart/form-data">
+	<form id="prod_edit" method="POST" action="admin-process.php?action=<?php echo ($action = 'prod_edit'); ?>" enctype="multipart/form-data">
 		<label for="prod_edit_catid">Category *</label>
 		<div><select id="prod_edit_catid" name="catid"></select></div>
 
@@ -113,6 +116,7 @@ if (!$_SESSION['authtoken']){
 		<div><input id="prod_edit_pid" type="number" name="pid" required="true" pattern="^[\d\.]+$" /></div>
 
 		<input type="submit" value="Submit" id="prod_edit_submit"/> <input type="button" id="prod_edit_cancel" value="Cancel" />
+		<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
 	</form>
 
 

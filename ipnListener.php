@@ -57,7 +57,7 @@ $fp = fsockopen('ssl://www.sandbox.paypal.com', 443, $errno, $errstr, 30);
 		error_log("test invoice: ".$invoice);
 		foreach($cartOrder as $car){
 			if ($car['oid']==$invoice){
-				if($car['pay']==$_POST['txn_id']){
+				if($car['tid']==$_POST['txn_id']){
 				     error_log("Duplicate Traction!!!");
 					 break;
 				}
@@ -104,7 +104,7 @@ $fp = fsockopen('ssl://www.sandbox.paypal.com', 443, $errno, $errstr, 30);
 		$totalPrice=(float)($_POST['mc_gross']);
 		error_log('priceStr='.$priceStr.' ttprice='.$totalPrice);
 
-		$digest=sha1($Currency. $MerEmail. $salt. $list_combine.'|'. $priceStr.'|'. $totalPrice);
+		$digest=sha1($Currency. $MerEmail. $salt. $list_combine.',length,null,key,null,getItem,null,setItem,null,removeItem,null,clear,null'.'|'. $priceStr.'|'. $totalPrice);
 		//$digest=sha1($Currency. $MerEmail. $salt. $list_combine. $priceStr);
         if ($digest==$digestOld)
 		{
@@ -113,7 +113,7 @@ $fp = fsockopen('ssl://www.sandbox.paypal.com', 443, $errno, $errstr, 30);
 			error_log('traction ID:'.$_POST['txn_id']);
 		}else {
 			$q = $db->prepare("UPDATE orders SET tid = ? WHERE oid = ?");
-	        $q->execute(array($Currency. $MerEmail. $salt. $list_combine.'|'. $priceStr.'|'. $totalPrice.'|||'.$digestOld, $_POST['invoice']));
+	        $q->execute(array("digest mismatch", $_POST['invoice']));
 			error_log('digest_not_match!!!');
 		}
 		// If 'VERIFIED', send email of IPN variables and values to specified email address
