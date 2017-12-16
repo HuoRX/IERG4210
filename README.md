@@ -1,11 +1,12 @@
 # IERG4210
 SID: 1155062114
+
 website: https://secure.s8.ierg4210.ie.cuhk.edu.hk
 
 ## Basic Features
 
 ### Main Page:
-Navigation part in the head, category list in the left side and user info (with login/logout and change password button)in the below the category list, shopping cart in the upper right with a hover to show.
+``` Navigation part in the head, category list in the left side and user info (with login/logout and change password button)in the below the category list, shopping cart in the upper right with a hover to show. ```
 
 ![alt text](https://github.com/HuoRX/IERG4210/blob/master/incl/img/WechatIMG5.jpeg)
 
