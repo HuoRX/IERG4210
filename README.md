@@ -1,7 +1,4 @@
 # IERG4210
-SID: 1155062114
-
-website: https://secure.s8.ierg4210.ie.cuhk.edu.hk
 
 ## Basic Features
 
